@@ -1,0 +1,11 @@
+#!/bin/bash
+
+apt update
+
+debconf-set-selections <<< 'mysql-server mysql-server/root_password password 123456'
+debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password 123456'
+
+apt install sysbench mysql-server -y
+
+
+echo "create database sbtest; CREATE USER 'sbtest'@'localhost'; GRANT ALL PRIVILEGES ON * . * TO 'sbtest'@'localhost'; FLUSH PRIVILEGES;" | mysql -u root -p123456
